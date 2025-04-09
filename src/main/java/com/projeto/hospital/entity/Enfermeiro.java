@@ -22,7 +22,7 @@ public class Enfermeiro {
     private Integer id;
     
     @Column(name = "nome", nullable = false)
-    private String nome;
+    private String nome; 
     
     @Column(name = "coren", unique = true)
     private String coren;
