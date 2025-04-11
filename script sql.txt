@@ -1,0 +1,88 @@
+CREATE DATABASE hospital_desenvolvimento;
+USE hospital_desenvolvimento;
+
+CREATE TABLE endereco (
+id_endereco INT PRIMARY KEY AUTO_INCREMENT,
+cep VARCHAR(10),
+logradouro VARCHAR(255),
+numero VARCHAR(10),
+complemento VARCHAR(255),
+bairro VARCHAR(255),
+cidade VARCHAR(255),
+estado VARCHAR(2)
+);
+
+CREATE TABLE convenio (
+id_convenio INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(255) NOT NULL,
+cnpj VARCHAR(18) UNIQUE
+);
+
+CREATE TABLE paciente (
+id_paciente INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(255) NOT NULL,
+data_nascimento DATE,
+sexo VARCHAR(10),
+cpf VARCHAR(14) UNIQUE,
+rg VARCHAR(20) UNIQUE,
+telefone1 VARCHAR(20),
+telefone2 VARCHAR(20),
+nome_familiar VARCHAR(255),
+telefone_familiar VARCHAR(20),
+email VARCHAR(255),
+id_convenio INT,
+id_endereco INT,
+FOREIGN KEY (id_convenio) REFERENCES convenio(id_convenio),
+FOREIGN KEY (id_endereco) REFERENCES endereco(id_endereco)
+);
+
+CREATE TABLE medico (
+id_medico INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(255) NOT NULL,
+crm VARCHAR(20) UNIQUE,
+especialidade VARCHAR(255),
+telefone1 VARCHAR(20),
+telefone2 VARCHAR(20),
+email VARCHAR(255),
+id_endereco INT,
+FOREIGN KEY (id_endereco) REFERENCES endereco(id_endereco)
+);
+
+CREATE TABLE consulta (
+id_consulta INT PRIMARY KEY AUTO_INCREMENT,
+id_paciente INT,
+id_medico INT,
+data_hora DATETIME,
+diagnostico TEXT,
+tratamento TEXT,
+observacoes TEXT,
+FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente),
+FOREIGN KEY (id_medico) REFERENCES medico(id_medico)
+);
+
+CREATE TABLE agendamento (
+id_agendamento INT PRIMARY KEY AUTO_INCREMENT,
+id_paciente INT,
+id_medico INT,
+data_hora DATETIME,
+status ENUM('Agendado', 'Confirmado', 'Cancelado', 'Realizado'),
+FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente),
+FOREIGN KEY (id_medico) REFERENCES medico(id_medico)
+);
+
+CREATE TABLE recepcionista (
+id_recepcionista INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(255) NOT NULL,
+cpf VARCHAR(14) UNIQUE,
+telefone1 VARCHAR(20),
+telefone2 VARCHAR(20),
+email VARCHAR(255)
+);
+
+CREATE TABLE enfermeiro (
+id_enfermeiro INT PRIMARY KEY AUTO_INCREMENT,
+nome VARCHAR(255) NOT NULL,
+coren VARCHAR(20) UNIQUE,
+telefone VARCHAR(20),
+email VARCHAR(255)
+);
