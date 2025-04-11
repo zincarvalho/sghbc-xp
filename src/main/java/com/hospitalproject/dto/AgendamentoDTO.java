@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AgendamentoDTO {
-    private Integer idAgendamento;
+    private long idAgendamento;
     private String nomePaciente;
     private StatusAgendamento status;
 }

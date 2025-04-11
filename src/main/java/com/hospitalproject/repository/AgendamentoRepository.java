@@ -14,4 +14,8 @@ public interface AgendamentoRepository extends JpaRepository<Agendamento, Long> 
            "(:nome IS NULL OR p.nome LIKE %:nome%) OR " +
            "(:cpf IS NULL OR p.cpf = :cpf)")
     List<Agendamento> findByNomeOrCpf(String nome, String cpf);
+    
+    @Query("SELECT a FROM Agendamento a JOIN FETCH a.paciente")
+    List<Agendamento> buscarTodosComPaciente();
+
 }

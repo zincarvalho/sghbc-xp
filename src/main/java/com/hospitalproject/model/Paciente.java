@@ -30,11 +30,4 @@ public class Paciente {
     private String telefone2;
     private String email;
 
-    @ManyToOne
-    @JoinColumn(name = "id_endereco")
-    private Endereco endereco;
-
-    @ManyToOne
-    @JoinColumn(name = "id_convenio")
-    private Convenio convenio;
 }
