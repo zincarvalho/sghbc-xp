@@ -1,9 +1,10 @@
-# o SGHBC-XP é um Sistema de Gerenciamento para hospital de baixa complexidade. 
+SGHBC-XP é um Sistema de Gerenciamento para hospital de baixa complexidade.
 
-Este é um projeto acadêmico desenvolvido com a metodologia **Extreme Programming (XP)**. 
+Este é um projeto acadêmico desenvolvido com a metodologia **Extreme Programming (XP)**.
 O objetivo é criar um **sistema hospitalar de baixa complexidade** para organizar e automatizar processos como agendamento de consultas, cadastro de pacientes e gestão de equipes médicas.
 
 ## 📌 Funcionalidades Principais
+
 - Cadastro de Pacientes 🏥
 - Agendamento de Consultas 📅
 - Prontuário Eletrônico 📄
