@@ -23,10 +23,12 @@ public class Agendamento {
 	@Column(name = "id_agendamento")
 	private Integer id;
 
-	@Column(name = "id_paciente")
+	@ManyToOne
+	@JoinColumn(name = "id_paciente")
 	private Paciente paciente;
 
-	@Column(name = "id_medico")
+	@ManyToOne
+	@JoinColumn(name = "id_medico")
 	private Medico medico;
 
 	@Column(name = "data_hora_entrada")
