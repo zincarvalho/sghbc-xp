@@ -3,6 +3,8 @@ package com.projeto.hospital.controller;
 import com.projeto.hospital.entity.Agendamento;
 import com.projeto.hospital.service.AgendamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,32 +13,60 @@ import java.util.List;
 @RequestMapping("/api/agendamentos")
 public class AgendamentoController {
 
+    private final AgendamentoService agendamentoService;
+
     @Autowired
-    private AgendamentoService agendamentoService;
+    public AgendamentoController(AgendamentoService agendamentoService) {
+        this.agendamentoService = agendamentoService;
+    }
 
     @GetMapping
-    public List<Agendamento> getAllAgendamentos() {
-        return agendamentoService.listarTodos();
+    public ResponseEntity<List<Agendamento>> listarTodos() {
+        List<Agendamento> agendamentos = agendamentoService.listarTodos();
+        return new ResponseEntity<>(agendamentos, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Agendamento getAgendamentoById(@PathVariable Integer id) {
-        return agendamentoService.buscarPorId(id);
+    public ResponseEntity<Agendamento> buscarPorId(@PathVariable Integer id) {
+        return agendamentoService.buscarPorId(id)
+                .map(agendamento -> new ResponseEntity<>(agendamento, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/paciente/busca")
+    public ResponseEntity<List<Agendamento>> buscarPorNomeOuCpfPaciente(@RequestParam String termo) {
+        List<Agendamento> agendamentos = agendamentoService.buscarPorNomeOuCpfPaciente(termo);
+        return new ResponseEntity<>(agendamentos, HttpStatus.OK);
     }
 
     @PostMapping
-    public Agendamento createAgendamento(@RequestBody Agendamento agendamento) {
-        return agendamentoService.salvar(agendamento);
+    public ResponseEntity<?> cadastrar(@RequestBody Agendamento agendamento) {
+        try {
+            Agendamento novoAgendamento = agendamentoService.salvar(agendamento);
+            return new ResponseEntity<>(novoAgendamento, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
-    @PutMapping("/{id}")
-    public Agendamento updateAgendamento(@PathVariable Integer id, @RequestBody Agendamento agendamento) {
-        agendamento.setId(id);
-        return agendamentoService.salvar(agendamento);
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<?> alterarStatus(
+            @PathVariable Integer id,
+            @RequestParam Agendamento.StatusAgendamento status) {
+        try {
+            Agendamento agendamentoAtualizado = agendamentoService.alterarStatus(id, status);
+            return new ResponseEntity<>(agendamentoAtualizado, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAgendamento(@PathVariable Integer id) {
-        agendamentoService.deletar(id);
+    public ResponseEntity<Void> deletar(@PathVariable Integer id) {
+        if (agendamentoService.buscarPorId(id).isPresent()) {
+            agendamentoService.deletar(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
