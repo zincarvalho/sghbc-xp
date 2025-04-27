@@ -13,10 +13,36 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "medico")
+@Table(name = "Medico")
+
 public class Medico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_medico")
     private Integer id;
+
+    @Column(name = "nome")
+    private String nome;
+
+    @Column(name = "crm")
+    private String crm;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "telefone")
+    private String telefone;
+
+    @Column(name = "telefone2")
+    private String telefone2;
+
+    @ManyToOne
+    @JoinColumn(name = "id_especialidade")
+    private Especialidade especialidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_endereco")
+    private Endereco endereco;
+
 }
