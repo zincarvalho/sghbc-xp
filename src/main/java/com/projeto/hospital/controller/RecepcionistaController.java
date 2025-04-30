@@ -43,7 +43,7 @@ public class RecepcionistaController {
 
     @PostMapping
     public ResponseEntity<Recepcionista> cadastrar(@RequestBody Recepcionista recepcionista) {
-        if (recepcionistaService.buscarPorId(recepcionista.getId()).isPresent()) {
+        if (recepcionistaService.buscarPorCpf(recepcionista.getCpf()).isPresent()) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
         Recepcionista novoRecepcionista = recepcionistaService.salvar(recepcionista);

@@ -26,6 +26,10 @@ public class RecepcionistaService {
         return recepcionistaRepository.findById(id);
     }
 
+    public Optional<Recepcionista> buscarPorCpf(String cpf) {
+        return recepcionistaRepository.findByCpf(cpf);
+    }
+
     public Recepcionista salvar(Recepcionista recepcionista) {
         return recepcionistaRepository.save(recepcionista);
     }

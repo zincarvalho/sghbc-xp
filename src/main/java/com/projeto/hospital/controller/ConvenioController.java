@@ -1,10 +1,14 @@
 package com.projeto.hospital.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.projeto.hospital.entity.Convenio;
 import com.projeto.hospital.service.ConvenioService;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -16,8 +20,9 @@ public class ConvenioController {
     private ConvenioService convenioService;
 
     @PostMapping
-    public Convenio salvar(@RequestBody Convenio convenio) {
-        return convenioService.salvar(convenio);
+    public ResponseEntity<Convenio> salvar(@Valid @RequestBody Convenio convenio) {
+        Convenio novoConvenio = convenioService.salvar(convenio);
+        return new ResponseEntity<>(novoConvenio, HttpStatus.CREATED);
     }
 
     @GetMapping

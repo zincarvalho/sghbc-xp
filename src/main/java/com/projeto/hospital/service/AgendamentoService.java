@@ -33,7 +33,7 @@ public class AgendamentoService {
     public Agendamento salvar(Agendamento agendamento) {
 
         if (agendamentoRepository.medicoDisponivel(agendamento.getMedico().getId(),
-                agendamento.getDataHoraEntrada())) {
+                agendamento.getDataHoraEntrada()) > 0) {
             throw new RuntimeException("Médico já possui agendamento neste horário");
         }
 
