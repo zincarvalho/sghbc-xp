@@ -1,6 +1,8 @@
 import React from "react";
-import ConsultaPage from "./ConsultaPage";
+import ProntuarioPage from "./pages/ProntuarioPage";
 
-export default function App() {
-  return <ConsultaPage />;
-}
+const App = () => {
+  return <ProntuarioPage />;
+};
+
+export default App;
