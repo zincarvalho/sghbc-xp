@@ -1,12 +1,25 @@
 package com.projeto.hospital.entity;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import com.projeto.hospital.entity.Perfil;
+
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "usuario")
@@ -49,19 +62,18 @@ public class Usuario {
     @Column(name = "perfil")
     private Set<Perfil> perfis = new HashSet<>();
 
-
     public void adicionarPerfilPadrao() {
         if (perfis.isEmpty()) {
             perfis.add(Perfil.PACIENTE); // Define um perfil padrão se não houver um
         }
     }
-    
+
     // Constructors
     public Usuario() {
     }
 
-    public Usuario(Integer id, String username, String password, String email, String nomeCompleto, 
-                  LocalDateTime ultimoAcesso, Boolean ativo, LocalDateTime dataCriacao, Set<Perfil> perfis) {
+    public Usuario(Integer id, String username, String password, String email, String nomeCompleto,
+            LocalDateTime ultimoAcesso, Boolean ativo, LocalDateTime dataCriacao, Set<Perfil> perfis) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -142,11 +154,10 @@ public class Usuario {
         return perfis;
     }
 
-
     public void setPerfis(Set<Perfil> perfis) {
         this.perfis = perfis;
     }
-    
+
     // Método para adicionar perfil
     public void adicionarPerfil(Perfil perfil) {
         if (perfis == null) {
@@ -154,12 +165,12 @@ public class Usuario {
         }
         perfis.add(perfil);
     }
-    
+
     // Método para remover perfil
     public void removerPerfil(Perfil perfil) {
         perfis.remove(perfil);
     }
-    
+
     // Método para verificar se possui determinado perfil
     public boolean possuiPerfil(Perfil perfil) {
         return perfis.contains(perfil);
@@ -168,10 +179,13 @@ public class Usuario {
     // equals and hashCode
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id) && Objects.equals(username, usuario.username) && Objects.equals(email, usuario.email);
+        return Objects.equals(id, usuario.id) && Objects.equals(username, usuario.username)
+                && Objects.equals(email, usuario.email);
     }
 
     @Override

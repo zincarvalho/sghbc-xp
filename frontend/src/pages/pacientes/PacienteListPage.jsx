@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
     Box,
@@ -11,12 +11,10 @@ import {
     TableHead,
     TableRow,
     Paper,
-    IconButton,
     TextField,
     InputAdornment,
     CircularProgress
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SearchIcon from '@mui/icons-material/Search';
@@ -34,7 +32,11 @@ function PacienteListPage() {
         fetchData,
         refetch 
     } = useEntityList('/pacientes', 'termo');
+    useEffect(()=>{
+        setpacientefiltrado(pacientes);
 
+    },[pacientes])
+    const [pacientesfiltrados, setpacientefiltrado]=useState(pacientes);
     const handleDelete = async (id) => {
         if (window.confirm('Tem certeza que deseja excluir este paciente?')) {
             try {
@@ -42,7 +44,6 @@ function PacienteListPage() {
                 refetch(searchTerm);
             } catch (err) {
                 console.error("Erro ao excluir paciente:", err);
-                
                 alert('Falha ao excluir paciente.');
             }
         }
@@ -54,7 +55,9 @@ function PacienteListPage() {
 
     const handleSearchSubmit = (event) => {
         event.preventDefault();
-        fetchData(searchTerm);
+        setpacientefiltrado(pacientes.filter(item =>(item.cpf.includes(searchTerm))||(item.nome==searchTerm)||(item.nomeCompleto==searchTerm)));
+        console.log(pacientesfiltrados);
+       // fetchData(searchTerm);
     };
 
     const formatDate = (dateString) => {
@@ -73,39 +76,47 @@ function PacienteListPage() {
     return (
         <Box>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                <Typography variant="h4" component="h1">
+                <Typography variant="h4" component="h1" sx={{ color: '#007bff' }}>
                     Gestão de Pacientes
                 </Typography>
-                <Button
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    component={RouterLink}
-                    to="/pacientes/novo" 
-                >
-                    Novo Paciente
-                </Button>
             </Box>
 
             <Paper sx={{ mb: 3 }}>
-                <Box component="form" onSubmit={handleSearchSubmit} sx={{ p: 2, display: 'flex', alignItems: 'center' }}>
-                    <TextField
-                        fullWidth
-                        variant="outlined"
-                        placeholder="Buscar por nome ou CPF..."
-                        value={searchTerm}
-                        onChange={handleSearchChange}
-                        InputProps={{
-                            startAdornment: (
-                                <InputAdornment position="start">
-                                    <SearchIcon />
-                                </InputAdornment>
-                            ),
-                        }}
-                        disabled={loading}
-                    />
-                    <Button type="submit" variant="contained" sx={{ ml: 1 }} disabled={loading}>
-                        {loading ? <CircularProgress size={24} /> : 'Buscar'}
-                    </Button>
+                <Box sx={{ p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    {/* Barra de busca à esquerda */}
+                    <Box component="form" onSubmit={handleSearchSubmit} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <TextField
+                            sx={{ width: 300 }}
+                            variant="outlined"
+                            placeholder="Buscar por nome ou CPF..."
+                            value={searchTerm}
+                            onChange={handleSearchChange}
+                            InputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <SearchIcon />
+                                    </InputAdornment>
+                                ),
+                            }}
+                            disabled={loading}
+                        />
+                        <Button type="submit" variant="contained" disabled={loading}>
+                            {loading ? <CircularProgress size={24} /> : 'Buscar'}
+                        </Button>
+                    </Box>
+
+                    {/* Botão imagem à direita */}
+                    <Box
+                        component={RouterLink}
+                        to="/pacientes/novo"
+                        sx={{ display: 'inline-block', cursor: 'pointer' }}
+                    >
+                        <img
+                            src="public/assets/CP.png"
+                            alt="Cadastrar Paciente"
+                            style={{ height: '100px' }}
+                        />
+                    </Box>
                 </Box>
             </Paper>
 
@@ -113,51 +124,78 @@ function PacienteListPage() {
             {error && <Typography color="error" sx={{ mt: 2, textAlign: 'center' }}>{error}</Typography>}
 
             {!loading && !error && (
-                <TableContainer component={Paper}>
-                    <Table sx={{ minWidth: 650 }} aria-label="tabela de pacientes">
+                <TableContainer
+                    component={Paper}
+                    sx={{
+                        maxHeight: 440,
+                        overflowY: 'auto',
+                        '&::-webkit-scrollbar': {
+                            width: '8px',
+                        },
+                        '&::-webkit-scrollbar-thumb': {
+                            backgroundColor: '#007bff',
+                            borderRadius: '10px',
+                        },
+                    }}
+                >
+                    <Table stickyHeader sx={{ minWidth: 650 }} aria-label="tabela de pacientes">
                         <TableHead>
                             <TableRow>
-                                <TableCell>Nome</TableCell>
-                                <TableCell>CPF</TableCell>
-                                <TableCell>Data Nasc.</TableCell>
-                                <TableCell>Telefone</TableCell>
-                                <TableCell>Ações</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Nome</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>CPF</TableCell>
+                                <TableCell sx={{ fontWeight: 'bold' }}>Ações</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
                             {pacientes.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={5} align="center">Nenhum paciente encontrado.</TableCell>
+                                <TableRow sx={{ height: 55 }}>
+                                    <TableCell colSpan={3} align="center">Nenhum paciente encontrado.</TableCell>
                                 </TableRow>
                             ) : (
-                                pacientes.map((paciente) => (
+                                pacientesfiltrados.map((paciente, index) => (
                                     <TableRow
                                         key={paciente.id}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                        sx={{
+                                            height: 55,
+                                            '&:last-child td, &:last-child th': { border: 0 },
+                                            backgroundColor: index % 2 === 0 ? '#e5eff8' : 'white',
+                                        }}
                                     >
-                                        {/* Use paciente.nomeCompleto ou paciente.nome */}
-                                        <TableCell component="th" scope="row">
+                                        <TableCell component="th" scope="row" sx={{ color: '#007bff', fontWeight: 'bold' }}>
                                             {paciente.nomeCompleto || paciente.nome}
                                         </TableCell>
-                                        <TableCell>{paciente.cpf}</TableCell>
-                                        <TableCell>{formatDate(paciente.dataNascimento)}</TableCell>
-                                        <TableCell>{paciente.telefone1}</TableCell>
+                                        <TableCell sx={{ color: '#007bff' }}>
+                                            {paciente.cpf}
+                                        </TableCell>
                                         <TableCell>
-                                            <IconButton
+                                            <Button
                                                 aria-label="editar"
                                                 color="primary"
+                                                variant="contained"
                                                 component={RouterLink}
                                                 to={`/pacientes/${paciente.id}/editar`}
+                                                sx={{ mr: 1 }}
                                             >
-                                                <EditIcon />
-                                            </IconButton>
-                                            <IconButton
+                                                Editar
+                                            </Button>
+                                            <Button
+                                                aria-label="agendar"
+                                                color="primary"
+                                                variant="contained"
+                                                component={RouterLink}
+                                                to={`/agendamentos/novo`}
+                                                sx={{ mr: 1 }}
+                                            >
+                                                Agendar
+                                            </Button>
+                                            <Button
                                                 aria-label="excluir"
-                                                color="error"
+                                                color="primary"
+                                                variant="contained"
                                                 onClick={() => handleDelete(paciente.id)}
                                             >
-                                                <DeleteIcon />
-                                            </IconButton>
+                                                Excluir
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 ))

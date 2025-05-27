@@ -1,13 +1,13 @@
 package com.projeto.hospital.service;
 
+import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.projeto.hospital.entity.Endereco;
 import com.projeto.hospital.repository.EnderecoRepository;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EnderecoService {

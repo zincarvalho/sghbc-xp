@@ -194,249 +194,310 @@ function PacienteForm() {
     }
 
     return (
+        
+        
+        
         <Box>
-            <Typography variant="h4" component="h1" gutterBottom>
-                {isEditMode ? 'Editar Paciente' : 'Novo Paciente'}
-            </Typography>
-            <Paper sx={{ p: 3 }}>
-                <Box component="form" onSubmit={handleSubmit} noValidate>
-                    <Grid container spacing={2}>
-                        {/* Dados Pessoais */}
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Dados Pessoais</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="nome"
-                                label="Nome Completo"
-                                name="nome"
-                                value={paciente.nome}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="cpf"
-                                label="CPF"
-                                name="cpf"
-                                value={paciente.cpf}
-                                onChange={handleChange}
-                            // TODO: Add mask or validation
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="rg"
-                                label="RG"
-                                name="rg" // Added RG field
-                                value={paciente.rg}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required
-                                fullWidth
-                                id="dataNascimento"
-                                label="Data de Nascimento"
-                                name="dataNascimento"
-                                type="date"
-                                InputLabelProps={{ shrink: true }}
-                                value={paciente.dataNascimento}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <FormControl fullWidth required>
-                                <InputLabel id="sexo-label">Sexo</InputLabel>
-                                <Select
-                                    labelId="sexo-label"
-                                    id="sexo"
-                                    name="sexo" // Added Sexo field
-                                    value={paciente.sexo}
-                                    label="Sexo"
-                                    onChange={handleChange}
-                                >
-                                    <MenuItem value=""><em>Selecione...</em></MenuItem>
-                                    <MenuItem value="Masculino">Masculino</MenuItem>
-                                    <MenuItem value="Feminino">Feminino</MenuItem>
-                                    <MenuItem value="Outro">Outro</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                required // Telefone1 is required in entity
-                                fullWidth
-                                id="telefone1"
-                                label="Telefone Principal"
-                                name="telefone1" // Renamed from telefone
-                                value={paciente.telefone1}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                id="telefone2"
-                                label="Telefone Secundário"
-                                name="telefone2" // Added Telefone 2 field
-                                value={paciente.telefone2}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                fullWidth
-                                id="email"
-                                label="Email"
-                                name="email"
-                                type="email"
-                                value={paciente.email}
-                                onChange={handleChange}
-                            />
-                        </Grid>
+            
+            <Grid container spacing={2}>
+            <Grid size={8}>
+  <Typography variant="h4" component="h1" sx={{ color: '#007bff' }}>
+    {isEditMode ? 'Editar Paciente' : 'Cadastro de Pacientes'}
+  </Typography>
+  <Paper sx={{ p: 3 }}>
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Grid container spacing={2}>
+        {/* Nome Completo */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>Nome Completo</Typography>
+          <TextField
+            required
+            fullWidth
+            id="nome"
+            name="nome"
+            value={paciente.nome}
+            onChange={handleChange}
+            variant="outlined"
+          />
+        </Grid>
 
-                        {/* Endereço */}
-                        <Grid item xs={12}>
-                            <Divider sx={{ my: 2 }} />
-                            <Typography variant="h6">Endereço</Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                fullWidth
-                                id="endereco.cep"
-                                label="CEP"
-                                name="endereco.cep"
-                                value={paciente.endereco.cep}
-                                onChange={handleChange}
-                                onBlur={handleCepLookup} // Add onBlur for CEP lookup
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={8}>
-                            <TextField
-                                fullWidth
-                                id="endereco.logradouro"
-                                label="Logradouro"
-                                name="endereco.logradouro"
-                                value={paciente.endereco.logradouro}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                fullWidth
-                                id="endereco.numero"
-                                label="Número"
-                                name="endereco.numero"
-                                value={paciente.endereco.numero}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={8}>
-                            <TextField
-                                fullWidth
-                                id="endereco.complemento"
-                                label="Complemento"
-                                name="endereco.complemento"
-                                value={paciente.endereco.complemento}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                fullWidth
-                                id="endereco.bairro"
-                                label="Bairro"
-                                name="endereco.bairro"
-                                value={paciente.endereco.bairro}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                fullWidth
-                                id="endereco.cidade"
-                                label="Cidade"
-                                name="endereco.cidade"
-                                value={paciente.endereco.cidade}
-                                onChange={handleChange}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                fullWidth
-                                id="endereco.estado"
-                                label="Estado"
-                                name="endereco.estado"
-                                value={paciente.endereco.estado}
-                                onChange={handleChange}
-                            />
-                        </Grid>
+        {/* CPF */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>CPF</Typography>
+          <TextField
+            required
+            fullWidth
+            id="cpf"
+            name="cpf"
+            value={paciente.cpf}
+            onChange={handleChange}
+          />
+        </Grid>
 
-                        {/* Convênio */}
-                        <Grid item xs={12}>
-                            <Divider sx={{ my: 2 }} />
-                            <Typography variant="h6">Convênio</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <InputLabel id="convenio-label">Convênio</InputLabel>
-                                <Select
-                                    labelId="convenio-label"
-                                    id="convenioId"
-                                    name="convenioId" // Use convenioId for state tracking
-                                    value={paciente.convenioId || ''} // Use convenioId from state
-                                    label="Convênio"
-                                    onChange={handleConvenioChange} // Use specific handler
-                                >
-                                    <MenuItem value="">
-                                        <em>Nenhum</em>
-                                    </MenuItem>
-                                    {convenios.map((conv) => (
-                                        <MenuItem key={conv.id} value={conv.id}>
-                                            {conv.nome} {/* Assuming convenio has a 'nome' field */}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
+        {/* RG */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>RG</Typography>
+          <TextField
+            required
+            fullWidth
+            id="rg"
+            name="rg"
+            value={paciente.rg}
+            onChange={handleChange}
+          />
+        </Grid>
 
-                    </Grid>
-                    {error && (
-                        <Typography color="error" variant="body2" sx={{ mt: 2 }}>
-                            {error}
-                        </Typography>
-                    )}
-                    <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
-                        <Button
-                            variant="outlined"
-                            onClick={() => navigate('/pacientes')}
-                            sx={{ mr: 1 }}
-                            disabled={loading}
-                        >
-                            Cancelar
-                        </Button>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            disabled={loading}
-                        >
-                            {loading ? <CircularProgress size={24} /> : (isEditMode ? 'Salvar Alterações' : 'Criar Paciente')}
-                        </Button>
-                    </Box>
-                </Box>
-            </Paper>
+        {/* Data de Nascimento */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>Data de Nascimento</Typography>
+          <TextField
+            required
+            fullWidth
+            id="dataNascimento"
+            name="dataNascimento"
+            type="date"
+            InputLabelProps={{ shrink: true }}
+            value={paciente.dataNascimento}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Sexo */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>Sexo</Typography>
+          <FormControl fullWidth required>
+            <Select
+              id="sexo"
+              name="sexo"
+              value={paciente.sexo}
+              onChange={handleChange}
+              displayEmpty
+            >
+              <MenuItem value=""><em>Selecione...</em></MenuItem>
+              <MenuItem value="Masculino">Masculino</MenuItem>
+              <MenuItem value="Feminino">Feminino</MenuItem>
+              <MenuItem value="Outro">Outro</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        {/* Telefone Principal */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>Telefone Principal</Typography>
+          <TextField
+            required
+            fullWidth
+            id="telefone1"
+            name="telefone1"
+            value={paciente.telefone1}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Telefone Secundário */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>Telefone Secundário</Typography>
+          <TextField
+            fullWidth
+            id="telefone2"
+            name="telefone2"
+            value={paciente.telefone2}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Email */}
+        <Grid item xs={12} sm={6}>
+          <Typography sx={{ color: '#007bff' }}>Email</Typography>
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            type="email"
+            value={paciente.email}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* CEP */}
+        <Grid item xs={12} sm={4}>
+          <Typography sx={{ color: '#007bff' }}>CEP</Typography>
+          <TextField
+            fullWidth
+            id="endereco.cep"
+            name="endereco.cep"
+            value={paciente.endereco.cep}
+            onChange={handleChange}
+            onBlur={handleCepLookup}
+          />
+        </Grid>
+
+        {/* Logradouro */}
+        <Grid item xs={12} sm={8}>
+          <Typography sx={{ color: '#007bff' }}>Logradouro</Typography>
+          <TextField
+            fullWidth
+            id="endereco.logradouro"
+            name="endereco.logradouro"
+            value={paciente.endereco.logradouro}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Número */}
+        <Grid item xs={12} sm={4}>
+          <Typography sx={{ color: '#007bff' }}>Número</Typography>
+          <TextField
+            fullWidth
+            id="endereco.numero"
+            name="endereco.numero"
+            value={paciente.endereco.numero}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Complemento */}
+        <Grid item xs={12} sm={8}>
+          <Typography sx={{ color: '#007bff' }}>Complemento</Typography>
+          <TextField
+            fullWidth
+            id="endereco.complemento"
+            name="endereco.complemento"
+            value={paciente.endereco.complemento}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Bairro */}
+        <Grid item xs={12} sm={4}>
+          <Typography sx={{ color: '#007bff' }}>Bairro</Typography>
+          <TextField
+            fullWidth
+            id="endereco.bairro"
+            name="endereco.bairro"
+            value={paciente.endereco.bairro}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Cidade */}
+        <Grid item xs={12} sm={4}>
+          <Typography sx={{ color: '#007bff' }}>Cidade</Typography>
+          <TextField
+            fullWidth
+            id="endereco.cidade"
+            name="endereco.cidade"
+            value={paciente.endereco.cidade}
+            onChange={handleChange}
+          />
+        </Grid>
+
+        {/* Estado */}
+        <Grid item xs={12} sm={4}>
+          <Typography sx={{ color: '#007bff' }}>Estado</Typography>
+          <TextField
+            fullWidth
+            label="estado"
+            id="endereco.estado"
+            name="endereco.estado"
+            value={paciente.endereco.estado}
+            onChange={handleChange}
+          />
+        </Grid>
+      </Grid>
+
+      {/* Erro */}
+      {error && (
+        <Typography color="error" variant="body2" sx={{ mt: 2 }}>
+          {error}
+        </Typography>
+      )}
+
+      {/* Botões */}
+      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'flex-end' }}>
+        {/* Botões futuros aqui */}
+      </Box>
+    </Box>
+  </Paper>
+</Grid>
+
+ <Divider orientation="vertical" flexItem sx={{ borderColor: '#007bff' }} />
+
+            <Grid size={3}>
+  <Typography variant="h4" component="h1" sx={{ color: '#007bff' }}>
+    Convênio
+  </Typography>
+  <Paper sx={{ p: 3 }}>
+    <Grid item xs={12}>
+      <FormControl fullWidth>
+        <InputLabel id="convenio-label" sx={{ color: '#007bff' }}>Convênio</InputLabel>
+        <Select
+          labelId="convenio-label"
+          id="convenioId"
+          name="convenioId"
+          value={paciente.convenioId || ''}
+          label="Convênio"
+          onChange={handleConvenioChange}
+        >
+          <MenuItem value="">
+            <em>Nenhum</em>
+          </MenuItem>
+          {convenios.map((conv) => (
+            <MenuItem key={conv.id} value={conv.id}>
+              {conv.nome}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Grid>
+
+    <Grid item xs={12} sx={{ mt: 2 }}>
+      <TextField
+        fullWidth
+        id="cnpjConvenio"
+        label="CNPJ"
+        name="cnpjConvenio"
+        value={paciente.cnpjConvenio || ''}
+        onChange={handleChange}
+        InputLabelProps={{ shrink: true }}
+        sx={{ '& label': { color: '#007bff' } }}
+      />
+    </Grid>
+
+    <Grid item xs={12}>
+      <Divider sx={{ my: 3 }} />
+    </Grid>
+
+    {/* Botões abaixo do conteúdo */}
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, mt: 2 }}>
+      <Button
+        type="submit"
+        variant="contained"
+        //onClick={handleSubmit}
+        disabled={loading}
+        sx={{ bgcolor: '#007bff', '&:hover': { bgcolor: '#0056b3' } }}
+      >
+        {loading ? <CircularProgress size={24} /> : (isEditMode ? 'Salvar Alterações' : 'Salvar')}
+      </Button>
+
+      <Button
+        variant="contained"
+        onClick={() => navigate('/pacientes')}
+        disabled={loading}
+        sx={{ bgcolor: 'error.main', '&:hover': { bgcolor: 'error.dark' } }}
+      >
+        Cancelar
+      </Button>
+    </Box>
+  </Paper>
+</Grid>
+
+
+
+            </Grid>
         </Box>
+        
     );
 }
 
 export default PacienteForm;
-
-

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import '../styles/AgendamentoExamesPage.css';
+import { useState } from 'react';
 
 type Paciente = {
   id: number;
@@ -13,48 +12,44 @@ type Paciente = {
   email: string;
 };
 
-
-
 export default function AgendamentoExamesPage() {
-  const [cpfBusca, setCpfBusca] = useState("");
+  const [cpfBusca, setCpfBusca] = useState('');
   const [paciente, setPaciente] = useState<Paciente | null>(null);
   const [tipoExame, setTipoExame] = useState('');
   const [dataHoraExame, setDataHoraExame] = useState('');
   const [observacoes, setObservacoes] = useState('');
 
   function formatarCPF(cpf: string) {
-    
     cpf = cpf.replace(/\D/g, '');
-  
+
     if (cpf.length !== 11) {
-      return cpf; 
+      return cpf;
     }
-  
-    
+
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
   }
-  
+
   function buscarPaciente() {
     if (!cpfBusca) {
-      alert("Digite o CPF antes de buscar!");
+      alert('Digite o CPF antes de buscar!');
       return;
     }
-  
+
     const cpfFormatado = formatarCPF(cpfBusca);
-  
+
     fetch(`http://localhost:8080/pacientes/buscar-por-cpf?cpf=${cpfFormatado}`)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error("Paciente não encontrado");
+          throw new Error('Paciente não encontrado');
         }
         return response.json();
       })
-      .then(data => {
+      .then((data) => {
         setPaciente(data);
       })
-      .catch(error => {
-        console.error("Erro:", error);
-        alert("Paciente não encontrado ou erro na busca!");
+      .catch((error) => {
+        console.error('Erro:', error);
+        alert('Paciente não encontrado ou erro na busca!');
       });
   }
 
@@ -67,33 +62,33 @@ export default function AgendamentoExamesPage() {
     const exame = {
       tipo: tipoExame,
       descricao: observacoes,
-      status: "Agendado", 
+      status: 'Agendado',
       dataHora: dataHoraExame,
       paciente: {
-        id: paciente.id 
-      }
+        id: paciente.id,
+      },
     };
 
-    fetch("http://localhost:8080/exames", {
-      method: "POST",
+    fetch('http://localhost:8080/exames', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(exame)
+      body: JSON.stringify(exame),
     })
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
-          throw new Error("Erro ao agendar exame");
+          throw new Error('Erro ao agendar exame');
         }
         return response.json();
       })
-      .then(data => {
-        alert("Exame agendado com sucesso!");
+      .then((data) => {
+        alert('Exame agendado com sucesso!');
         console.log(data);
       })
-      .catch(error => {
-        console.error("Erro ao salvar exame:", error);
-        alert("Erro ao agendar exame.");
+      .catch((error) => {
+        console.error('Erro ao salvar exame:', error);
+        alert('Erro ao agendar exame.');
       });
   }
 
@@ -137,24 +132,24 @@ export default function AgendamentoExamesPage() {
 
             <div className="form-group">
               <label>Nome Completo</label>
-              <input type="text" value={paciente?.nome || ""} readOnly />
+              <input type="text" value={paciente?.nome || ''} readOnly />
             </div>
 
             <div className="form-group">
               <label>Sexo</label>
-              <input type="text" value={paciente?.sexo || ""} readOnly />
+              <input type="text" value={paciente?.sexo || ''} readOnly />
             </div>
             <br />
 
             <div className="form-group">
               <label>CPF</label>
-              <input type="text" value={paciente?.cpf || ""} readOnly />
+              <input type="text" value={paciente?.cpf || ''} readOnly />
             </div>
 
             <div className="form-group">
               <label>Data de Nascimento</label>
               <div className="input-icon">
-                <input type="text" value={paciente?.dataNascimento || ""} readOnly />
+                <input type="text" value={paciente?.dataNascimento || ''} readOnly />
                 <img src="/data.png" alt="Calendário" />
               </div>
             </div>
@@ -162,19 +157,17 @@ export default function AgendamentoExamesPage() {
 
             <div className="form-group">
               <label>Tipo do Exame</label>
-              <input type="text" 
-              value={tipoExame}
-              onChange={(e) => setTipoExame(e.target.value)}
-              />
+              <input type="text" value={tipoExame} onChange={(e) => setTipoExame(e.target.value)} />
             </div>
 
             <div className="form-group">
               <label>Data e hora do Exame</label>
               <div className="input-icon">
-                <input type="datetime-local"
+                <input
+                  type="datetime-local"
                   value={dataHoraExame}
                   onChange={(e) => setDataHoraExame(e.target.value)}
-                 />
+                />
                 <img src="/data.png" alt="Calendário" />
               </div>
             </div>
@@ -182,11 +175,12 @@ export default function AgendamentoExamesPage() {
 
             <div className="form-group">
               <label>Observações</label>
-              <textarea className="observacoes-textarea"
+              <textarea
+                className="observacoes-textarea"
                 rows={3}
                 value={observacoes}
-                onChange={(e) => setObservacoes(e.target.value)}>                  
-                </textarea>
+                onChange={(e) => setObservacoes(e.target.value)}
+              ></textarea>
             </div>
           </div>
 
@@ -198,7 +192,9 @@ export default function AgendamentoExamesPage() {
             <div className="form-group">
               <label>Especialidade</label>
               <select defaultValue="">
-                <option value="" disabled hidden>Selecione</option>
+                <option value="" disabled hidden>
+                  Selecione
+                </option>
                 <option>Cardiologia</option>
                 <option>Neurologia</option>
               </select>
@@ -207,15 +203,21 @@ export default function AgendamentoExamesPage() {
             <div className="form-group">
               <label>Médico</label>
               <select defaultValue="">
-                <option value="" disabled hidden>Selecione</option>
+                <option value="" disabled hidden>
+                  Selecione
+                </option>
                 <option>Dr. João</option>
                 <option>Dra. Maria</option>
               </select>
             </div>
 
             <div className="form-buttons">
-            <button type="button" className="btn-salvar" onClick={salvarExame}>Salvar</button>
-              <button type="button" className="btn-cancelar">Cancelar</button>
+              <button type="button" className="btn-salvar" onClick={salvarExame}>
+                Salvar
+              </button>
+              <button type="button" className="btn-cancelar">
+                Cancelar
+              </button>
             </div>
           </div>
         </form>
