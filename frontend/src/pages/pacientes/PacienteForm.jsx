@@ -397,7 +397,7 @@ function PacienteForm() {
           <Typography sx={{ color: '#007bff' }}>Estado</Typography>
           <TextField
             fullWidth
-            label="estado"
+            label="Estado"
             id="endereco.estado"
             name="endereco.estado"
             value={paciente.endereco.estado}
