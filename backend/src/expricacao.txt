@@ -1,0 +1,107 @@
+1. Criação da Tabela no Banco de Dados
+A tabela exame foi criada com os campos:
+
+id (chave primária, autoincremento)
+
+tipo (ex: Raio-X, Sangue, Ressonância, etc.) – obrigatório
+
+descricao (breve descrição do exame) – obrigatório
+
+status (Agendado, Realizado, Cancelado) – obrigatório
+
+data_hora (data e hora agendadas) – obrigatório
+
+id_paciente (relacionamento com a tabela paciente) – obrigatório
+
+2. Modelagem no Backend 
+Criada a classe Exame.java representando a tabela.
+
+Relacionamento:
+
+Cada Exame pertence a um Paciente.
+
+Validações aplicadas com jakarta.validation:
+
+@NotBlank para tipo, descricao, status
+
+@NotNull para dataHora
+
+@FutureOrPresent para dataHora (não pode ser no passado)
+
+@Pattern para garantir que status tenha apenas valores válidos: Agendado, Realizado, Cancelado
+
+@NotNull para garantir que o Paciente esteja vinculado.
+
+3. Criacao do Service
+ExameService.java com métodos CRUD:
+
+salvar
+
+buscarPorId
+
+buscarTodos
+
+buscarPorTipo
+
+buscarPorStatus
+
+buscarPorData
+
+buscarPorPaciente
+
+atualizar
+
+deletar
+
+Tratamento de erros:
+
+Se nao encontrar Exame → lança excecao amigavel
+
+Se o Paciente associado nao existir → impede salvar
+
+Se tentar salvar com data no passado ou status invalido → rejeita
+
+4. Criacao do Repository
+ExameRepository.java
+
+Metodos customizados usando Spring Data JPA (findByTipoContainingIgnoreCase, findByStatus, etc.)
+
+5. Criacao do Controller (Endpoints REST)
+ExameController.java
+
+Endpoints criados:
+
+POST /exames → Cadastrar
+
+GET /exames → Listar todos
+
+GET /exames/{id} → Buscar por ID
+
+GET /exames/tipo/{tipo} → Buscar por Tipo
+
+GET /exames/status/{status} → Buscar por Status
+
+GET /exames/data/{data} → Buscar por Data (formato ISO Local Date)
+
+GET /exames/paciente/{idPaciente} → Buscar por Paciente
+
+PUT /exames/{id} → Atualizar
+
+DELETE /exames/{id} → Remover
+
+Aplicado tambem:
+
+@Valid nos métodos que recebem Exame no corpo da requisição (@RequestBody Exame exame).
+
+6. Testes Realizados
+Testes de cadastro (valido e inva´lido)
+
+Testes de atualizacoes
+
+Testes de buscas específicas
+
+Testes de remocao
+
+Testes de validacao de dados (status, data, campos obrigatorios)
+
+Testes de tratamento de erros (ex: exame nao encontrado, paciente invalido, etc.)
