@@ -5,7 +5,10 @@ Este projeto foi idealizado como atividade prática das cadeiras de **Modelo de 
 O foco foi a aplicação de metodologias ágeis, especialmente:
 - **Extreme Programming (XP)**
 - **Test-Driven Development (TDD)**
-- Adoção de tecnologias como **Java com o ecossistema Spring**/**MYSQL**
+- Adoção de tecnologias como: 
+    Backend: Java 17+, Spring Boot 3+, Spring Security, Spring Data JPA, Hibernate, Maven, Lombok, H2 Database, JWT.
+    Frontend: Node.js 20+, npm, React 18+, Vite, Axios, Material UI (MUI), React Router DOM, date-fns.
+
 
 ❗ **O projeto foi encerrado em 28/05/2025 antes de sua finalização.** Esta versão do repositório é mantida apenas para fins didáticos e de registro técnico.
 
